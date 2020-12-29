@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Test-App-Movies</string>
+
+
+
+
+    <string name="runtime">Runtime:</string>
+    <string name="runtime_format">Runtime: %sm</string>
+    <string name="status">Status</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="overview">Overview</string>
+    <string name="keywords">Keywords</string>
+    <string name="network">Network</string>
+    <string name="user_score">User Score</string>
+
+    <string name="not_rated">NR</string>
+
+    <string name="tv">TV</string>
+    <string name="theatres">Theatres</string>
+
+    <string name="whats_popular">What\'s popular</string>
+    <string name="today_on">Today on</string>
+    <string name="top_rated">Top rated</string>
+
 </resources>

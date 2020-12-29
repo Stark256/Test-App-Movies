@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.features.test_app_movies"
-        minSdkVersion 29
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -41,21 +41,28 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+//    implementation 'androidx.navigation:navigation-fragment:2.3.2'
+//    implementation 'androidx.navigation:navigation-ui:2.3.2'
+//    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+//    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
+//    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
 
     // Room DB
 //    implementation 'android.arch.persistence.room:runtime:1.1.1'
 //    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
-    def room_version = "2.2.5"
-
+    def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
 
     //Glide
-    implementation "com.github.bumptech.glide:glide:4.9.0"
-    kapt "com.github.bumptech.glide:compiler:4.9.0"
+    def glide_version = "4.9.0"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.28.3'
@@ -78,6 +85,8 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava3:rxjava:3.0.8"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
