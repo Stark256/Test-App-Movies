@@ -1,158 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".app.ui.main.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_main"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".app.ui.main.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_main"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                style="@style/toolbar_background"/>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_main"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_main"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/background_view">
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/background_view">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_today_on_main"
+                    android:id="@+id/tv_error_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@+id/sbv_today_on_main"
-                    app:layout_constraintBottom_toBottomOf="@+id/sbv_today_on_main"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/today_on"
-                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    android:text="@string/not_found"
                     android:textSize="24sp"
-                    style="@style/text_view"/>
-
-                <com.features.test_app_movies.app.customViews.SwitchButtonView
-                    android:id="@+id/sbv_today_on_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_today_on_main"
-                    android:layout_margin="16dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_today_on_main"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sbv_today_on_main"
-                    android:layout_marginTop="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:clipToPadding="false"/>
-
-                <TextView
-                    android:id="@+id/tv_whats_popular_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@+id/sbv_whats_popular_main"
-                    app:layout_constraintBottom_toBottomOf="@+id/sbv_whats_popular_main"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/whats_popular"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    style="@style/text_view"/>
-
-                <com.features.test_app_movies.app.customViews.SwitchButtonView
-                    android:id="@+id/sbv_whats_popular_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_today_on_main"
-                    app:layout_constraintStart_toEndOf="@+id/tv_whats_popular_main"
-                    android:layout_margin="16dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_whats_popular_main"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sbv_whats_popular_main"
-                    android:layout_marginTop="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:clipToPadding="false"/>
+                    style="@style/text_view"
+                    android:visibility="gone"/>
 
 
-                <TextView
-                    android:id="@+id/tv_top_rated_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@+id/sbv_top_rated_main"
-                    app:layout_constraintBottom_toBottomOf="@+id/sbv_top_rated_main"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/top_rated"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    style="@style/text_view"/>
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scroll_view_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone">
 
-                <com.features.test_app_movies.app.customViews.SwitchButtonView
-                    android:id="@+id/sbv_top_rated_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_whats_popular_main"
-                    app:layout_constraintStart_toEndOf="@+id/tv_top_rated_main"
-                    android:layout_margin="16dp"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_top_rated_main"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sbv_top_rated_main"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:clipToPadding="false"/>
+                        <TextView
+                            android:id="@+id/tv_today_on_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/sbv_today_on_main"
+                            app:layout_constraintBottom_toBottomOf="@+id/sbv_today_on_main"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/today_on"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            style="@style/text_view"/>
+
+                        <com.features.test_app_movies.app.customViews.SwitchButtonView
+                            android:id="@+id/sbv_today_on_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_today_on_main"
+                            android:layout_margin="16dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_today_on_main"
+                            android:layout_width="0dp"
+                            android:layout_height="340dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/sbv_today_on_main"
+                            android:layout_marginTop="16dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:clipToPadding="false"/>
+
+                        <TextView
+                            android:id="@+id/tv_whats_popular_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/sbv_whats_popular_main"
+                            app:layout_constraintBottom_toBottomOf="@+id/sbv_whats_popular_main"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/whats_popular"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            style="@style/text_view"/>
+
+                        <com.features.test_app_movies.app.customViews.SwitchButtonView
+                            android:id="@+id/sbv_whats_popular_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/rv_today_on_main"
+                            app:layout_constraintStart_toEndOf="@+id/tv_whats_popular_main"
+                            android:layout_margin="16dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_whats_popular_main"
+                            android:layout_width="0dp"
+                            android:layout_height="340dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/sbv_whats_popular_main"
+                            android:layout_marginTop="16dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:clipToPadding="false"/>
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/tv_top_rated_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/sbv_top_rated_main"
+                            app:layout_constraintBottom_toBottomOf="@+id/sbv_top_rated_main"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/top_rated"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            style="@style/text_view"/>
 
-        </androidx.core.widget.NestedScrollView>
+                        <com.features.test_app_movies.app.customViews.SwitchButtonView
+                            android:id="@+id/sbv_top_rated_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/rv_whats_popular_main"
+                            app:layout_constraintStart_toEndOf="@+id/tv_top_rated_main"
+                            android:layout_margin="16dp"/>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_top_rated_main"
+                            android:layout_width="0dp"
+                            android:layout_height="340dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/sbv_top_rated_main"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:clipToPadding="false"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </RelativeLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

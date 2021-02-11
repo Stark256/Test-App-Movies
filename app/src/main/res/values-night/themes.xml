@@ -27,6 +27,10 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="text_view_black" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="fade_background">
         <item name="android:background">@drawable/fade_effect_left_sundown</item>
     </style>

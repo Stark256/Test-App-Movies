@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/sunrise_accent</item>
         <item name="colorPrimaryVariant">@color/sunrise_accent</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
 <!--        <item name="colorSecondary">@color/teal_200</item>-->
 <!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
@@ -14,16 +15,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+
     <style name="background_view">
         <item name="android:background">@drawable/background_gradient_sunrise</item>
     </style>
 
-    <style name="toolbar_background">
+    <style name="toolbar_background" parent="">
         <item name="android:background">@color/sunrise_accent</item>
     </style>
 
     <style name="text_view" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="text_view_black" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="fade_background">

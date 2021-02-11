@@ -40,19 +40,19 @@ class PopularityView @JvmOverloads constructor(
             value < 25 -> {
                 this.progressBar?.progressDrawable =
                     ContextCompat.getDrawable(context, R.drawable.progress_circle_red)
-                this.textView?.text = value.toString()
+                this.textView?.text = String.format(context.getString(R.string.percentage), value.toString())
                 this.progressBar?.progress = value
             }
             value in 25..69 -> {
                 this.progressBar?.progressDrawable =
                     ContextCompat.getDrawable(context, R.drawable.progress_circle_yellow)
-                this.textView?.text = value.toString()
+                this.textView?.text = String.format(context.getString(R.string.percentage), value.toString())
                 this.progressBar?.progress = value
             }
             value >= 70 -> {
                 this.progressBar?.progressDrawable =
                     ContextCompat.getDrawable(context, R.drawable.progress_circle_green)
-                this.textView?.text = value.toString()
+                this.textView?.text = String.format(context.getString(R.string.percentage), value.toString())
                 this.progressBar?.progress = value
             }
         }
