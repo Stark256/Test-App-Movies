@@ -26,22 +26,22 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-    @Inject
-    lateinit var factory: MainViewModelFactory
+    lateinit var mainComponent: MainComponent
+    @Inject lateinit var factory: MainViewModelFactory
     private lateinit var viewModel: MainViewModel
     private lateinit var topRatedShowsAdapter: MainAdapter
     private lateinit var popularShowsAdapter: MainAdapter
     private lateinit var todayShowsAdapter: MainAdapter
-    private lateinit var binding: ActivityMainBinding
+    private val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
 
     private var clickEnabled: Boolean = false
     private var progressDialog = ProgressDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mainComponent = appComponent.mainComponent().create()
+        mainComponent.inject(this)
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        appComponent.inject(this)
         this.viewModel = ViewModelProvider(viewModelStore, this.factory).get(MainViewModel::class.java)
 
         binding.toolbarMain.inflateMenu(R.menu.menu_main)

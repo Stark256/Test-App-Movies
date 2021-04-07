@@ -18,20 +18,19 @@ import javax.inject.Inject
 
 class WatchlistActivity : BaseActivity() {
 
-    @Inject
-    lateinit var factory: WatchlistViewModelFactory
+    lateinit var watchlistComponent: WatchlistComponent
+    @Inject lateinit var factory: WatchlistViewModelFactory
     private lateinit var viewModel: WatchListViewModel
-    private lateinit var binding: ActivityWatchlistBinding
+    private val binding: ActivityWatchlistBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_watchlist) }
     private lateinit var adapter: WatchlistAdapter
 
     private var clickEnabled: Boolean = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        watchlistComponent = appComponent.watchlistComponent().create()
+        watchlistComponent.inject(this)
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_watchlist)
-        appComponent.inject(this)
         this.viewModel = ViewModelProvider(viewModelStore, factory).get(WatchListViewModel::class.java)
 
 
