@@ -2,26 +2,31 @@ package com.features.test_app_movies.app.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.features.test_app_movies.api.ApiService
+import androidx.lifecycle.ViewModelProvider
 import com.features.test_app_movies.api.models.*
 import com.features.test_app_movies.app.common.*
 import com.features.test_app_movies.app.customViews.SwitchButtonView
 import com.features.test_app_movies.app.models.SaveMovieResponse
 import com.features.test_app_movies.app.models.SavingState
-import com.features.test_app_movies.db.AppDatabase
+import com.features.test_app_movies.app.repositories.DBRepository
+import com.features.test_app_movies.app.repositories.MoviesRepository
+import com.features.test_app_movies.app.repositories.TVsRepository
 import com.features.test_app_movies.db.models.DBMovies
-import hu.akarnokd.rxjava3.bridge.RxJavaBridge
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import java.lang.Exception
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(private val api: ApiService, private val db: AppDatabase) : ViewModel(), CoroutineScope {
+class MainViewModel(
+    private val moviesRepository: MoviesRepository,
+    private val tVsRepository: TVsRepository,
+    private val dbRepository: DBRepository) : ViewModel(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + SupervisorJob() + CoroutineExceptionHandler { _, e ->  throw e}
+        get() = Dispatchers.IO + SupervisorJob() + CoroutineExceptionHandler { _, e ->  throw e}
 
     private val compositeDisposable = CompositeDisposable()
     val state = MutableLiveData<MainState>().default(initialValue = MainState.DefaultState())
@@ -114,28 +119,28 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
 
     private suspend fun getTopRatedShows() : TopRatedShows = withContext(Dispatchers.IO) {
         TopRatedShows(
-            async { api.getTopRatedMovies() }.await().results ?: ArrayList(),
-            async { api.getTopRatedTVs() }.await().results ?: ArrayList()
+            async { moviesRepository.loadTopRatedMovies() }.await().results ?: ArrayList(),
+            async { tVsRepository.loadTopRatedTVs() }.await().results ?: ArrayList()
         )
     }
 
     private suspend fun getPopularShows() : PopularShows = withContext(Dispatchers.IO) {
         PopularShows(
-            async { api.getPopularMovies() }.await().results ?: ArrayList(),
-            async { api.getPopularTVs() }.await().results ?: ArrayList()
+            async { moviesRepository.loadPopularMovies() }.await().results ?: ArrayList(),
+            async { tVsRepository.loadPopularTVs() }.await().results ?: ArrayList()
         )
     }
 
     private suspend fun getTodayShows() : TodayShows = withContext(Dispatchers.IO) {
         TodayShows(
-            async { api.getTodayMovies() }.await().results ?: ArrayList(),
-            async { api.getTodayTVs() }.await().results ?: ArrayList()
+            async { moviesRepository.loadTodayMovies() }.await().results ?: ArrayList(),
+            async { tVsRepository.loadTodayTVs() }.await().results ?: ArrayList()
         )
     }
 
     fun addToWatchlist(response: SaveMovieResponse) {
         savingState.postValue(SavingState.Saving())
-        compositeDisposable.add(RxJavaBridge.toV3Single(db.getMoviesDao().getMovieByID(response.id))
+        compositeDisposable.add(dbRepository.getMovieByID(response.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -149,8 +154,8 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
     private fun saveToWatchlist(response: SaveMovieResponse) {
         when(response.type) {
             BaseDetails.ShowType.TYPE_TV -> {
-                compositeDisposable.add(api.getTVDetails(id = response.id)
-                    .zipWith(api.getTVKeywords(response.id), {t1, t2 ->
+                compositeDisposable.add(tVsRepository.loadTVDetails(response.id)
+                    .zipWith(tVsRepository.loadTVsKeywords(response.id), {t1, t2 ->
                         t1.apply { t2.keywords?.let { keywords = it.keywordsToString() } }
                     })
                     .subscribeOn(Schedulers.io())
@@ -164,8 +169,8 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
                     }))
             }
             BaseDetails.ShowType.TYPE_MOVIE -> {
-                compositeDisposable.add(api.getMovieDetails(id = response.id)
-                    .zipWith(api.getMovieKeywords(response.id), {t1, t2 ->
+                compositeDisposable.add(moviesRepository.loadMoviesDetails(id = response.id)
+                    .zipWith(moviesRepository.loadMoviesKeywords(response.id), {t1, t2 ->
                         t1.apply { t2.keywords?.let { keywords = it.keywordsToString() } }
                     })
                     .subscribeOn(Schedulers.io())
@@ -182,7 +187,7 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
     }
     private fun saveToDB(dbMovie: DBMovies) {
         compositeDisposable.add(
-            RxJavaBridge.toV3Completable(db.getMoviesDao().insert(dbMovie))
+                dbRepository.saveToWatchlist(dbMovie)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -193,10 +198,6 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
         )
     }
 
-
-
-
-
     override fun onCleared() {
         coroutineContext.cancelChildren()
         compositeDisposable.dispose()
@@ -204,4 +205,15 @@ class MainViewModel(private val api: ApiService, private val db: AppDatabase) : 
         super.onCleared()
     }
 
+}
+
+class MainViewModelFactory @Inject constructor(
+    private val moviesRepository: MoviesRepository,
+    private val tvsRepository: TVsRepository,
+    private val dbRepository: DBRepository) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return MainViewModel(moviesRepository, tvsRepository, dbRepository) as T
+    }
 }

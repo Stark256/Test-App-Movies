@@ -52,18 +52,15 @@ class DetailsActivity : BaseActivity() {
             else -> null
         } }
 
-    @Inject
-    lateinit var factory: DetailsViewModelFactory
+    lateinit var detailsComponent: DetailsComponent
+    @Inject lateinit var factory: DetailsViewModelFactory
     private lateinit var viewModel: DetailsViewModel
-    private lateinit var binding: ActivityDetailsBinding
-
-    private var progressDialog = ProgressDialog()
-
+    private val binding: ActivityDetailsBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_details) }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
+        detailsComponent = appComponent.detailsComponent().create()
+        detailsComponent.inject(this)
         super.onCreate(savedInstanceState)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        appComponent.inject(this)
 
         setSupportActionBar(binding.toolbarDetails)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

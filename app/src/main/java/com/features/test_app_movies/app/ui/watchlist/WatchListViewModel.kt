@@ -2,16 +2,18 @@ package com.features.test_app_movies.app.ui.watchlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.features.test_app_movies.app.common.default
-import com.features.test_app_movies.db.AppDatabase
+import com.features.test_app_movies.app.repositories.DBRepository
+import com.features.test_app_movies.app.repositories.MoviesRepository
 import com.features.test_app_movies.db.models.DBMovies
-import hu.akarnokd.rxjava3.bridge.RxJavaBridge
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 
-class WatchListViewModel(private val db: AppDatabase) : ViewModel() {
+class WatchListViewModel(private val dbRepository: DBRepository) : ViewModel() {
 
 
     private val compositeDisposable = CompositeDisposable()
@@ -22,7 +24,7 @@ class WatchListViewModel(private val db: AppDatabase) : ViewModel() {
     fun loadData() {
         state.postValue(WatchListState.LoadingState())
         compositeDisposable.add(
-            RxJavaBridge.toV3Single(db.getMoviesDao().getAllMovies())
+            dbRepository.getAllMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -35,7 +37,7 @@ class WatchListViewModel(private val db: AppDatabase) : ViewModel() {
 
     fun removeFromWatchlist(dbObject: DBMovies) {
         compositeDisposable.add(
-            RxJavaBridge.toV3Completable(db.getMoviesDao().delete(dbObject))
+            dbRepository.removeMovie(dbObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -49,5 +51,14 @@ class WatchListViewModel(private val db: AppDatabase) : ViewModel() {
         compositeDisposable.dispose()
         compositeDisposable.clear()
         super.onCleared()
+    }
+}
+
+class WatchlistViewModelFactory @Inject constructor(
+    private val dbRepository: DBRepository) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return WatchListViewModel(dbRepository) as T
     }
 }
